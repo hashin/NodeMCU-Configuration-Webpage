@@ -1,3 +1,4 @@
+# git
 trys = 0
 staip = nil
 
@@ -16,17 +17,18 @@ wifi.ap.config(apcfg)
 ap_mac = wifi.ap.getmac()
 wifi.ap.setip(ipcfg)
 print(wifi.ap.getip())
+-- get AP IP, don't know why, but without it everything breaks
+tmr.alarm(2,1000, wifi.ap.getip)
 
 --create HTTP server
 srv=net.createServer(net.TCP)
 srv:listen(80,function(conn)
     conn:on("receive",function(conn,payload)
-        print(payload)
+        --print(payload)
         --webpage header
         conn:send("<!DOCTYPE html><html lang='en'><body><h1>Wireless Lava Lamp setup</h1><br/>")
-        print(wifi.sta.status())
+        --print(wifi.sta.status())
         if wifi.sta.status() ~= 5 then
-        --if staip == nil then
             --TODO better getting of ssid and password
             --parse GET response
             local parameters = string.match(payload, "^GET(.*)HTTP\/1.1")
@@ -103,8 +105,8 @@ srv:listen(80,function(conn)
                 <h4>Lamp will reboot now</h4>
                 </body> </html>]])
             conn:close()
-            tmr.delay(5000000)
-            node.restart()
+            print('Configuration complete - reboot')
+            tmr.alarm (0, 4000,0, function() node.restart() end)
         end     
     end)
     conn:on("sent",function(conn) conn:close() end)
