@@ -1,4 +1,3 @@
-# git
 trys = 0
 staip = nil
 
@@ -18,7 +17,7 @@ ap_mac = wifi.ap.getmac()
 wifi.ap.setip(ipcfg)
 print(wifi.ap.getip())
 -- get AP IP, don't know why, but without it everything breaks
-tmr.alarm(2,1000, wifi.ap.getip)
+tmr.alarm(2,500, wifi.ap.getip)
 
 --create HTTP server
 srv=net.createServer(net.TCP)
